@@ -10,12 +10,11 @@ CREATE TABLE department(
 );
 
 
-CREATE TABLE rolee(
+CREATE TABLE role(
     r_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL (8,2) NOT NULL,
     department_id INT,
-    -- which variable do you want to make FK then reference primary key of a particular table
     FOREIGN KEY (department_id) REFERENCES department(d_id)
 );
 
