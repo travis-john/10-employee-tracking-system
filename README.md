@@ -27,7 +27,7 @@ Design the following database schema containing three tables:
   * **last_name** - VARCHAR(30) to hold employee last name
   * **role_id** - INT to hold reference to role employee has
   * **manager_id** - INT to hold reference to another employee that manager of the current employee. This field may be null if the employee has no manager
-  
+
 Build a command-line application that at a minimum allows the user to:
 
   * Add departments, roles, employees
@@ -66,7 +66,7 @@ How do you deliver this? Here are some guidelines:
 
 * You will need to perform a variety of SQL JOINS to complete this assignment, and it's recommended you review the week's activities if you need a refresher on this.
 
-![Employee Tracker](Assets/employee-tracker.gif)
+![Employee Tracker](assets/images/employee-tracker.gif)
 
 ### Hints
 
