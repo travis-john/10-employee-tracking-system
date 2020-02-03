@@ -24,5 +24,5 @@ VALUES
 (4, 'Kevin', 'Tupik', 3, 3),
 (5, 'Malia', 'Brown', 5, 6),
 (6, 'Kevin', 'Malone',6, NULL ),
-(6, 'Sarah', 'Lourd', 8, NULL),
-(7, 'Tom', 'Allen', 7, 7 );
+(7, 'Sarah', 'Lourd', 8, NULL),
+(8, 'Tom', 'Allen', 7, 7 );
