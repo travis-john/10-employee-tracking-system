@@ -12,8 +12,9 @@ VALUES
 (3, 'Software Engineer', 120000, 2),
 (4, 'Lead Software Engineer', 150000, 2),
 (5, 'Accountant', 125000, 3),
-(6, 'Lawyer', 150000, 4),
-(7, 'Legal Team Lead', 180000, 4);
+(6, 'Lead Accoutant', 150000, 3)
+(7, 'Lawyer', 150000, 4),
+(8, 'Legal Team Lead', 180000, 4);
 
 INSERT INTO employees(e_id, first_name, last_name, role_id, manager_id)
 VALUES
@@ -21,6 +22,7 @@ VALUES
 (2, 'Mike', 'Chan', 2, 1),
 (3, 'Ashley', 'Rodriguez', 4, NULL),
 (4, 'Kevin', 'Tupik', 3, 3),
-(5, 'Malia', 'Brown', 5, NULL),
-(6, 'Sarah', 'Lourd', 7, NULL),
-(7, 'Tom', 'Allen', 7, NULL );
+(5, 'Malia', 'Brown', 5, 6),
+(6, 'Kevin', 'Malone',6, NULL ),
+(6, 'Sarah', 'Lourd', 8, NULL),
+(7, 'Tom', 'Allen', 7, 7 );
