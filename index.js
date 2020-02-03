@@ -39,5 +39,21 @@ const firstPrompt = () => {
 
     //confirming response in terminal
     console.log(`You chose to ${response.action} a/an ${response.option}`);
-  })
+
+    //using a switch statement to determine logic of user's choice of acction and target
+    switch(response.action){
+      case: 'ADD':
+          createData(response.option);
+          break;
+      case: 'VIEW':
+          viewData(response.option);
+          break;
+      case: 'UPDATE':
+          updateData(response.option);
+          break;
+      case: 'DELETE':
+          deleteData(response.option);
+          break;
+    }
+  });
 }
