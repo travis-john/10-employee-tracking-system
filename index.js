@@ -15,4 +15,29 @@ let connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId + "\n");
+  firstPrompt();
 });
+
+//first prompt that a user will see
+const firstPrompt = () => {
+
+  //first inquirer prompt
+  inquirer.prompt([
+    {
+      name: 'action',
+      type: 'list',
+      message: 'What would you like to do?',
+      choices: ['ADD', 'VIEW', 'UPDATE', 'DELETE']
+    },
+    {
+      name: 'option',
+      type: 'list',
+      message: 'Select from below',
+      choices: ['EMPLOYEE', 'ROLE', 'DEPARTMENT']
+    }
+  ]).then(function(response) {
+
+    //confirming response in terminal
+    console.log(`You chose to ${response.action} a/an ${response.option}`);
+  })
+}
