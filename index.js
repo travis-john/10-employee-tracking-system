@@ -7,7 +7,7 @@ let connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: 'INSERT PASSWORD HERE',
+  password: "INSERT PASSWORD HERE",
   database: 'ems_db'
 });
 
@@ -42,16 +42,16 @@ const firstPrompt = () => {
 
     //using a switch statement to determine logic of user's choice of acction and target
     switch(response.action){
-      case: 'ADD':
+      case 'ADD':
           createData(response.option);
           break;
-      case: 'VIEW':
+      case 'VIEW':
           viewData(response.option);
           break;
-      case: 'UPDATE':
+      case 'UPDATE':
           updateData(response.option);
           break;
-      case: 'DELETE':
+      case 'DELETE':
           deleteData(response.option);
           break;
     }
