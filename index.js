@@ -55,5 +55,8 @@ const firstPrompt = () => {
           deleteData(response.option);
           break;
     }
-  });
+  })
+  .catch(function(err) {
+    console.log(err);
+  })
 }
