@@ -16,13 +16,24 @@ VALUES
 (7, 'Lawyer', 150000, 4),
 (8, 'Legal Team Lead', 180000, 4);
 
-INSERT INTO employees(e_id, first_name, last_name, role_id, manager_id)
+-- INSERT INTO employees(e_id, first_name, last_name, role_id, manager_id)
+-- VALUES
+-- (1, 'John', 'Doe', 1, NULL),
+-- (2, 'Mike', 'Chan', 2, 1),
+-- (3, 'Ashley', 'Rodriguez', 4, NULL),
+-- (4, 'Kevin', 'Tupik', 3, 3),
+-- (5, 'Malia', 'Brown', 5, 6),
+-- (6, 'Kevin', 'Malone',6, NULL ),
+-- (7, 'Sarah', 'Lourd', 8, NULL),
+-- (8, 'Tom', 'Allen', 7, 7 );
+
+INSERT INTO employees(e_id, first_name, last_name, role_id)
 VALUES
-(1, 'John', 'Doe', 1, NULL),
-(2, 'Mike', 'Chan', 2, 1),
-(3, 'Ashley', 'Rodriguez', 4, NULL),
-(4, 'Kevin', 'Tupik', 3, 3),
-(5, 'Malia', 'Brown', 5, 6),
-(6, 'Kevin', 'Malone',6, NULL ),
-(7, 'Sarah', 'Lourd', 8, NULL),
-(8, 'Tom', 'Allen', 7, 7 );
+(1, 'John', 'Doe', 1),
+(2, 'Mike', 'Chan', 2),
+(3, 'Ashley', 'Rodriguez', 4),
+(4, 'Kevin', 'Tupik', 3),
+(5, 'Malia', 'Brown', 5),
+(6, 'Kevin', 'Malone',6),
+(7, 'Sarah', 'Lourd', 8),
+(8, 'Tom', 'Allen', 7);
