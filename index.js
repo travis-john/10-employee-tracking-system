@@ -7,7 +7,7 @@ let connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: "INSERT PASSWORD HERE",
+  password: "",
   database: 'ems_db'
 });
 
@@ -59,4 +59,33 @@ const firstPrompt = () => {
   .catch(function(err) {
     console.log(err);
   })
+}
+
+//viewing all data function
+const viewData = (response) => {
+  switch(response){
+    case 'EMPLOYEE':
+      console.log(`Selecting all employees...\n`)
+      connection.query(`SELECT * FROM employees`, function(err, response) {
+        if (err) throw err
+        console.table(response);
+        connection.end()
+      });
+      break;
+    case 'ROLE':
+      console.log(`Selecting all roles...\n`)
+      connection.query(`SELECT * FROM roles`, function(err, response) {
+        if (err) throw err
+        console.table(response);
+        connection.end()
+      })
+      break;
+    case 'DEPARTMENT':
+      console.log(`Selecting all departments...\n`)
+      connection.query(`SELECT * FROM departments`, function(err, response) {
+        if(err) throw err
+        console.table(response);
+        connection.end()
+      });
+  }
 }

@@ -12,7 +12,7 @@ VALUES
 (3, 'Software Engineer', 120000, 2),
 (4, 'Lead Software Engineer', 150000, 2),
 (5, 'Accountant', 125000, 3),
-(6, 'Lead Accoutant', 150000, 3)
+(6, 'Lead Accoutant', 150000, 3),
 (7, 'Lawyer', 150000, 4),
 (8, 'Legal Team Lead', 180000, 4);
 
