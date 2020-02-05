@@ -33,7 +33,7 @@ const firstPrompt = () => {
       name: 'option',
       type: 'list',
       message: 'Select from below',
-      choices: ['EMPLOYEE', 'ROLE', 'DEPARTMENT']
+      choices: ['EMPLOYEES', 'ROLES', 'DEPARTMENTS']
     }
   ]).then(function(response) {
 
@@ -64,28 +64,48 @@ const firstPrompt = () => {
 //viewing all data function
 const viewData = (response) => {
   switch(response){
-    case 'EMPLOYEE':
+    case 'EMPLOYEES':
       console.log(`Selecting all employees...\n`)
       connection.query(`SELECT * FROM employees`, function(err, response) {
         if (err) throw err
         console.table(response);
-        connection.end()
+        continuePrompt();
       });
       break;
-    case 'ROLE':
+    case 'ROLES':
       console.log(`Selecting all roles...\n`)
       connection.query(`SELECT * FROM roles`, function(err, response) {
         if (err) throw err
         console.table(response);
-        connection.end()
+        continuePrompt();
       })
       break;
-    case 'DEPARTMENT':
+    case 'DEPARTMENTS':
       console.log(`Selecting all departments...\n`)
       connection.query(`SELECT * FROM departments`, function(err, response) {
         if(err) throw err
         console.table(response);
-        connection.end()
+        continuePrompt();
       });
   }
+}
+
+const continuePrompt = () => {
+  inquirer.prompt([
+    {
+      name: 'action',
+      type: 'list',
+      message: 'Would you like to contine or exit?',
+      choices: ['CONTINUE', 'EXIT']
+    }
+  ]).then(function(response){
+    console.log(`${response.action} \n`)
+    switch(`${response.action}`){
+      case 'CONTINUE':
+        firstPrompt();
+        break;
+      case 'EXIT':
+        connection.end();
+    }
+  });
 }
