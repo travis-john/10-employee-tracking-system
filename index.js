@@ -7,7 +7,7 @@ let connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: "Y7'zA@5q",
+  password: "",
   database: 'ems_db'
 });
 
@@ -27,14 +27,8 @@ const firstPrompt = () => {
       name: 'action',
       type: 'list',
       message: 'What would you like to do?',
-      choices: ['ADD', 'VIEW', 'UPDATE', 'DELETE']
+      choices: ['ADD EMPLOYEE', 'VIEW INFORMATION', 'UPDATE INFORMATION', 'DELETE INFORMATION']
     }
-    // {
-    //   name: 'option',
-    //   type: 'list',
-    //   message: 'Select from below',
-    //   choices: ['EMPLOYEES', 'ROLES', 'DEPARTMENTS']
-    // }
   ]).then(function(response) {
 
     //confirming response in terminal
@@ -42,26 +36,64 @@ const firstPrompt = () => {
 
     //using a switch statement to determine logic of user's choice of acction and target
     switch(response.action){
-      case 'ADD':
-          // createData(response.option);
-          createData()
+      case 'ADD EMPLOYEE':
+          addEmployee();
           break;
-      case 'VIEW':
-          // viewData(response.option);
+      case 'VIEW INFORMATION':
           viewData()
           break;
-      case 'UPDATE':
-          // updateData(response.option);
+      case 'UPDATE INFORMATION':
           createData()
           break;
-      case 'DELETE':
-          // deleteData(response.option);
+      case 'DELETE INFORMATION':
           deleteData();
           break;
     }
   })
   .catch(function(err) {
     console.log(err);
+  })
+}
+
+const addEmployee = () => {
+  const employeesQuery = 'SELECT * FROM employees',
+        rolesQuery = 'SELECT * FROM roles';
+  connection.query(employeesQuery, function(err, employee) {
+    if (err) throw err
+    connection.query(rolesQuery, function(err, role) {
+        if (err) throw err
+        inquirer.prompt([{
+          name: 'first_name',
+          type: 'input',
+          message: "What is the employee's first name?"
+        },
+        {
+          name: 'last_name',
+          type: 'input',
+          message: "What is the employee's last name"
+        },
+        {
+          name: 'role',
+          type: 'list',
+          message: "What is this employee's role",
+          choices: () => role.map(val => val.title)
+        }
+        {
+          name: 'hasManager',
+          type: 'confirm',
+          message: "Does this employee have a manager?"
+        },
+        {
+          name: 'manager',
+          type: 'list',
+          message: 'Choose their manager',
+          when: 'hasManager',
+          choices: () => employee.map(val => val.first_name + " " + val.last_name)
+        }
+      ]).then(function(response) {
+
+      })
+    })
   })
 }
 
