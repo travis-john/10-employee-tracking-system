@@ -77,7 +77,7 @@ const addEmployee = () => {
           type: 'list',
           message: "What is this employee's role",
           choices: () => role.map(val => val.title)
-        }
+        },
         {
           name: 'hasManager',
           type: 'confirm',
@@ -87,14 +87,30 @@ const addEmployee = () => {
           name: 'manager',
           type: 'list',
           message: 'Choose their manager',
-          when: 'hasManager',
+          when: (answer) => answer.hasManager,
           choices: () => employee.map(val => val.first_name + " " + val.last_name)
         }
       ]).then(function(response) {
-
-      })
-    })
-  })
+        const roleQuery = 'SELECT r_id FROM roles WHERE ?';
+        connection.query(roleQuery, { title: response.role}, function(err, response) {
+          if (err) throw err;
+          const roleId = role[0].id;
+          const managerQuery = "SELECT r_id FROM employees WHERE ? AND ?";
+          const firstName = response.manager.slice(0, response.manager.indexOf(" "));
+          const lastName = response.manager.slice(response.manager.indexOf(" ") + 1, response.manager.length);
+          connection.query(managerQuery, [{ first_name: firstName }, { last_name: lastName }], function(err, response){
+            if(err) throw err;
+            const employeeId = result[0].id;
+            const query = "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
+            connection.query(query [response.fname, response.lname, roleId, employeeId], function(err, response) {
+              if(err) throw err;
+              continuePrompt();
+            });
+          });
+        });
+      });
+    });
+  });
 }
 
 //viewing all data function
