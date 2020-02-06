@@ -7,7 +7,7 @@ let connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: "",
+  password: "Y7'zA@5q",
   database: 'ems_db'
 });
 
@@ -28,31 +28,35 @@ const firstPrompt = () => {
       type: 'list',
       message: 'What would you like to do?',
       choices: ['ADD', 'VIEW', 'UPDATE', 'DELETE']
-    },
-    {
-      name: 'option',
-      type: 'list',
-      message: 'Select from below',
-      choices: ['EMPLOYEES', 'ROLES', 'DEPARTMENTS']
     }
+    // {
+    //   name: 'option',
+    //   type: 'list',
+    //   message: 'Select from below',
+    //   choices: ['EMPLOYEES', 'ROLES', 'DEPARTMENTS']
+    // }
   ]).then(function(response) {
 
     //confirming response in terminal
-    console.log(`You chose to ${response.action} a/an ${response.option}`);
+    console.log(`You chose to ${response.action}`);
 
     //using a switch statement to determine logic of user's choice of acction and target
     switch(response.action){
       case 'ADD':
-          createData(response.option);
+          // createData(response.option);
+          createData()
           break;
       case 'VIEW':
-          viewData(response.option);
+          // viewData(response.option);
+          viewData()
           break;
       case 'UPDATE':
-          updateData(response.option);
+          // updateData(response.option);
+          createData()
           break;
       case 'DELETE':
-          deleteData(response.option);
+          // deleteData(response.option);
+          deleteData();
           break;
     }
   })
@@ -62,32 +66,52 @@ const firstPrompt = () => {
 }
 
 //viewing all data function
-const viewData = (response) => {
-  switch(response){
-    case 'EMPLOYEES':
-      console.log(`Selecting all employees...\n`)
-      connection.query(`SELECT * FROM employees`, function(err, response) {
-        if (err) throw err
-        console.table(response);
-        continuePrompt();
-      });
-      break;
-    case 'ROLES':
-      console.log(`Selecting all roles...\n`)
-      connection.query(`SELECT * FROM roles`, function(err, response) {
-        if (err) throw err
-        console.table(response);
-        continuePrompt();
-      })
-      break;
-    case 'DEPARTMENTS':
-      console.log(`Selecting all departments...\n`)
-      connection.query(`SELECT * FROM departments`, function(err, response) {
-        if(err) throw err
-        console.table(response);
-        continuePrompt();
-      });
-  }
+const viewData = () => {
+  inquirer.prompt([
+    {
+      name: 'filter',
+      type: 'list',
+      message: 'How would you like to view the data?',
+      choices: ['VIEW ALL EMPLOYEES', 'VIEW EMPLOYEES BY DEPARTMENT', 'VIEW EMPLOYEES BY MANAGER']
+    }]).then(function(response){
+      switch(response.filter){
+        case 'VIEW ALL EMPLOYEES':
+          console.log('Selecting all employees...\n');
+          connection.query(`SELECT * FROM employees`, function(err, response) {
+            if(err) throw err
+            console.table(response);
+            continuePrompt();
+          });
+          break;
+        case 'VIEW EMPLOYEES BY DEPARTMENT':
+          let query = 'SELECT department_name FROM departments';
+          connection.query(query, function(err, response) {
+            if(err) throw err;
+            console.log(response);
+            inquirer.prompt(
+              {
+              type: 'list',
+              name: 'department',
+              message: 'SELECT DEPARTMENT',
+              // choices: ()=>response
+              choices: ['SALES', 'ENGINERING', 'FINANCE', 'LEGAL']
+            }).then(function(response) {
+              let query = 'SELECT d_id FROM departments Where ?';
+              connection.query(query, { department_name: response.department }, function(err, data) {
+                if (err) throw err
+                const departmentId = data[0].d_id;
+                const newQuery = "SELECT * FROM employees e INNER JOIN roles r on e.role_id = r.department_id Where e.role_id = ?";
+                connection.query(newQuery, [departmentId], (err, response) => {
+                    if(err) throw err;
+                    console.table(response);
+                });
+                continuePrompt();
+              });
+            });
+          });
+          break;
+      }
+    });
 }
 
 const continuePrompt = () => {
