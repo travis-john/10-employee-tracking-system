@@ -43,7 +43,7 @@ const firstPrompt = () => {
           viewData()
           break;
       case 'UPDATE INFORMATION':
-          createData()
+          updateData()
           break;
       case 'DELETE INFORMATION':
           deleteData();
@@ -55,6 +55,7 @@ const firstPrompt = () => {
   })
 }
 
+//adding employee to database
 const addEmployee = () => {
   const employeesQuery = 'SELECT * FROM employees',
         rolesQuery = 'SELECT * FROM roles';
@@ -160,6 +161,38 @@ const viewData = () => {
           break;
       }
     });
+}
+
+//updating data in database
+const updateData = () => {
+
+}
+
+//deleting data from database
+const deleteData = () => {
+  const query = 'SELECT * FROM employees';
+  connection.query(query, function(err, response) {
+    if (err) throw err;
+    inquirer.prompt(
+      {
+        type: 'list',
+        name: 'remove',
+        message: 'Which employee would you like to remove?',
+        choices: () => {
+          return response.map(val => val.first_name + ' ' + val.last_name);
+        }
+      }
+    ).then(function(response) {
+      const query = 'DELETE FROM employees WHERE ? and ?';
+      const firstName = response.remove.slice(0, response.remove.indexOf(" "));
+      const lastName = response.remove.slice(response.remove.indexOf(" ") + 1, response.remove.length);
+      connection.query(query, [{first_name: firstName}, {last_name: lastName}], function(err, data) {
+        if (err) throw err;
+        console.log('Employee successfully removed from database');
+        continuePrompt();
+      })
+    })
+  })
 }
 
 const continuePrompt = () => {
