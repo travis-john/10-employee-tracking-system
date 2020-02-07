@@ -7,7 +7,7 @@ let connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: "",
+  password: "Y7'zA@5q",
   database: 'ems_db'
 });
 
@@ -165,7 +165,44 @@ const viewData = () => {
 
 //updating data in database
 const updateData = () => {
-
+  const query = "SELECT * FROM employees";
+    connection.query(query, (err, results) => {
+        if(err) throw err;
+        const roleQuery = "SELECT * FROM roles";
+        connection.query(roleQuery, (err, data) => {
+            if(err) throw err;
+            inquirer.prompt([
+                {
+                    type: "list",
+                    name: "update",
+                    message: "Which employee role would you like to update?",
+                    choices: ()=> {
+                        return results.map(val => val.first_name + " " + val.last_name);
+                    }
+                },
+                {
+                    type: "list",
+                    name: "role",
+                    message: "Choose new role for employee:",
+                    choices: ()=> data.map(val => val.title)
+                }
+            ]).then(response => {
+                const firstName = response.update.slice(0, response.update.indexOf(" "));
+                const lastName = response.update.slice(response.update.indexOf(" ") + 1, response.update.length);
+                const roleQuery = "SELECT r_id from roles WHERE ?"
+                connection.query(roleQuery, { title: response.role }, (err, result) => {
+                    if(err) throw err;
+                    const updateQuery = "UPDATE employees SET ? WHERE ? AND ?";
+                    connection.query(updateQuery, [{ role_id: result[0].r_id }, { first_name: firstName }, { last_name: lastName }],
+                        (err, result) => {
+                            if(err) throw err;
+                            console.log("Employee role updated successfully!");
+                            continuePrompt()
+                        });
+                  });
+            });
+        });
+    })
 }
 
 //deleting data from database
