@@ -7,7 +7,7 @@ let connection = mysql.createConnection({
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: "Y7'zA@5q",
+  password: "",
   database: 'ems_db'
 });
 
@@ -142,8 +142,9 @@ const viewData = () => {
               type: 'list',
               name: 'department',
               message: 'SELECT DEPARTMENT',
-              // choices: ()=>response
-              choices: ['SALES', 'ENGINERING', 'FINANCE', 'LEGAL']
+              choices: () => {
+                return response.map(val => val.department_name)
+              }
             }).then(function(response) {
               let query = 'SELECT d_id FROM departments Where ?';
               connection.query(query, { department_name: response.department }, function(err, data) {
@@ -159,6 +160,35 @@ const viewData = () => {
             });
           });
           break;
+          case 'VIEW EMPLOYEES BY MANAGER':
+            let employeeQuery = "SELECT concat(first_name, ' ', last_name) as name FROM employees";
+            connection.query(employeeQuery, function(err, response) {
+              if (err) throw err
+              inquirer.prompt(
+                {
+                  type: 'list',
+                  name: 'manager',
+                  message: 'Choose a manager',
+                  choices: () => response
+                }
+              ).then(function(response) {
+                const firstNameArr = response.manager.split(' ');
+                const lastNameIndex = response.manager.indexOf(' ');
+                const firstName = firstNameArr[0];
+                const lastName = response.manager.substring(lastNameIndex + 1, response.manager.length);
+                const queryEmployeeID = 'SELECT e_id from employees where first_name = ? AND last_name = ?';
+                connection.query(queryEmployeeID, [firstName, lastName], function(err, results) {
+                  if (err) throw err;
+                  const queryManager = 'SELECT * from employees where manager_id = ?';
+                  const managerID = results[0].id;
+                  connection.query(queryManager, [managerID], function(err, data){
+                    if (err) throw err;
+                    console.table(data)
+                    continuePrompt();
+                  })
+                })
+              })
+            })
       }
     });
 }
@@ -166,7 +196,7 @@ const viewData = () => {
 //updating data in database
 const updateData = () => {
   const query = "SELECT * FROM employees";
-    connection.query(query, (err, results) => {
+    connection.query(query, (err, response) => {
         if(err) throw err;
         const roleQuery = "SELECT * FROM roles";
         connection.query(roleQuery, (err, data) => {
@@ -177,7 +207,7 @@ const updateData = () => {
                     name: "update",
                     message: "Which employee role would you like to update?",
                     choices: ()=> {
-                        return results.map(val => val.first_name + " " + val.last_name);
+                        return response.map(val => val.first_name + " " + val.last_name);
                     }
                 },
                 {
@@ -186,7 +216,7 @@ const updateData = () => {
                     message: "Choose new role for employee:",
                     choices: ()=> data.map(val => val.title)
                 }
-            ]).then(response => {
+            ]).then(function(response) {
                 const firstName = response.update.slice(0, response.update.indexOf(" "));
                 const lastName = response.update.slice(response.update.indexOf(" ") + 1, response.update.length);
                 const roleQuery = "SELECT r_id from roles WHERE ?"
