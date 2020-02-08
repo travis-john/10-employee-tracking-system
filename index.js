@@ -146,11 +146,11 @@ const viewData = () => {
                 return response.map(val => val.department_name)
               }
             }).then(function(response) {
-              let query = 'SELECT d_id FROM departments Where ?';
+              let query = 'SELECT d_id FROM departments WHERE ?';
               connection.query(query, { department_name: response.department }, function(err, data) {
                 if (err) throw err
                 const departmentId = data[0].d_id;
-                const newQuery = "SELECT * FROM employees e INNER JOIN roles r on e.role_id = r.department_id Where e.role_id = ?";
+                const newQuery = "SELECT * FROM employees INNER JOIN roles on employees.role_id = roles.r_id WHERE roles.department_id = ?";
                 connection.query(newQuery, [departmentId], (err, response) => {
                     if(err) throw err;
                     console.table(response);
