@@ -15,8 +15,27 @@ let connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId + "\n");
+  banner();
   firstPrompt();
 });
+
+const bannder = () => {
+    console.log(" ____________________________________________________");
+    console.log("|                                                   |");
+    console.log("|  _____                  _                         |");
+    console.log("| |  ___|_ ___  __  _ ___| | ___  _   _  ___   ___  |");
+    console.log("| |  _| | `_  '_  |  _   | |/ _ '| | | |/ _ ' / _ ' |");
+    console.log("| | |___| | | | | | |_|  | | |_| | | | |  __/|  __/ |");
+    console.log("| |_____|_| |_| |_| ____/|_|'___/|___| |____||____| |");
+    console.log("|                 |_|             |___/             |");
+    console.log("|  __  __                                           |");
+    console.log("| |  '/  | ____ _ __   ____  ___   ___   _ __       |");
+    console.log("| | |'/| |/ _' | '_ ' / _  |/ _ ' / _ ' | ,__|      |");
+    console.log("| | |  | | |_| | | | | |_| | |_| |  __/ | |         |");
+    console.log("| |_|  |_||__,_|_| |_|___,_|___, |____|_|_|         |");
+    console.log("|                           |___/                   |");
+    console.log("`---------------------------------------------------'");
+}
 
 //first prompt that a user will see
 const firstPrompt = () => {
